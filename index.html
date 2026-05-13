@@ -43,6 +43,8 @@
   .nav-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
   .nav-btn.primary { background: var(--green); color: #fff; border-color: var(--green); }
   .nav-btn.primary:hover { background: var(--green-dark); }
+  .nav-btn.logout { background: var(--orange-light); color: var(--orange); border-color: var(--orange-light); }
+  .nav-btn.logout:hover { background: var(--orange); color: #fff; }
 
   /* LAYOUT */
   .main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
@@ -50,6 +52,25 @@
   /* PAGES */
   .page { display: none; }
   .page.active { display: block; }
+
+  /* LOGIN PAGE */
+  .login-container { max-width: 420px; margin: 80px auto; padding: 0 20px; }
+  .login-box { background: var(--surface); border-radius: 16px; padding: 40px; border: 1px solid var(--border2); box-shadow: var(--shadow-md); }
+  .login-header { text-align: center; margin-bottom: 32px; }
+  .login-logo { width: 60px; height: 60px; background: var(--green); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; margin: 0 auto 16px; }
+  .login-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .login-subtitle { font-size: 14px; color: var(--text2); }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .form-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; background: var(--bg); transition: all .15s; }
+  .form-input:focus { outline: none; border-color: var(--green); background: var(--surface); }
+  .login-btn { width: 100%; padding: 13px; border: none; border-radius: var(--radius-sm); background: var(--green); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; font-family: inherit; }
+  .login-btn:hover { background: var(--green-dark); }
+  .login-btn:disabled { background: var(--text3); cursor: not-allowed; }
+  .error-message { background: #fee2e2; color: #991b1b; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 16px; display: none; }
+  .error-message.show { display: block; }
+  .login-info { margin-top: 24px; padding: 16px; background: var(--green-light); border-radius: var(--radius-sm); font-size: 13px; color: var(--green-dark); }
+  .login-info strong { display: block; margin-bottom: 6px; }
 
   /* HERO */
   .hero { background: var(--surface); border-radius: 16px; padding: 32px; margin-bottom: 20px; border: 1px solid var(--border2); }
@@ -126,193 +147,233 @@
   /* DETAIL MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.show { display: flex; }
-  .modal { background: var(--surface); border-radius: 16px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-md); }
-  .modal-header { padding: 20px 24px 0; display: flex; align-items: flex-start; justify-content: space-between; }
-  .modal-body { padding: 16px 24px 24px; }
-  .modal-close { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text2); flex-shrink: 0; }
-  .modal-close:hover { background: var(--surface2); }
-  .detail-icon { width: 56px; height: 56px; border-radius: 14px; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px; }
-  .detail-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-  .detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-  .detail-info { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .detail-row { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
-  .detail-row i { font-size: 16px; color: var(--green); margin-top: 1px; flex-shrink: 0; }
-  .detail-row .dr-lbl { font-size: 12px; color: var(--text3); margin-bottom: 1px; }
-  .detail-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .detail-act { padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); cursor: pointer; text-align: center; font-size: 12px; font-weight: 500; color: var(--text2); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all .15s; }
-  .detail-act i { font-size: 20px; }
-  .detail-act:hover { background: var(--green-light); color: var(--green); border-color: var(--green); }
+  .modal-box { background: var(--surface); border-radius: 16px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+  .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--surface); z-index: 10; }
+  .modal-title { font-size: 18px; font-weight: 700; }
+  .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text2); }
+  .modal-close:hover { background: var(--orange-light); color: var(--orange); }
+  .modal-body { padding: 24px; }
+
+  /* DETAIL */
+  .detail-info { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+  .detail-row { display: flex; gap: 12px; }
+  .detail-row > i { font-size: 18px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+  .detail-row > div { flex: 1; }
+  .dr-lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+  .detail-actions { display: flex; gap: 8px; }
+  .detail-act { flex: 1; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--text); transition: all .15s; }
+  .detail-act:hover { background: var(--green-light); border-color: var(--green); color: var(--green); }
   .detail-act.primary { background: var(--green); color: #fff; border-color: var(--green); }
   .detail-act.primary:hover { background: var(--green-dark); }
 
-  /* FORM MODAL */
-  .form-modal { max-width: 520px; }
-  .form-modal .modal-body h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-  .form-group { margin-bottom: 14px; }
-  .form-group label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 5px; font-weight: 500; }
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 14px; background: var(--surface); color: var(--text); outline: none; font-family: inherit; transition: border-color .15s;
-  }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .form-actions { display: flex; gap: 8px; margin-top: 20px; }
-  .btn-cancel { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; cursor: pointer; font-size: 14px; color: var(--text2); font-family: inherit; transition: background .15s; }
-  .btn-cancel:hover { background: var(--surface2); }
-  .btn-save { flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm); background: var(--green); color: #fff; cursor: pointer; font-size: 14px; font-weight: 600; font-family: inherit; transition: background .15s; }
-  .btn-save:hover { background: var(--green-dark); }
-
   /* DASHBOARD */
-  .dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .dash-header h2 { font-size: 20px; font-weight: 700; }
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-  .stat-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
+  .dash-header { margin-bottom: 24px; }
+  .dash-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .dash-subtitle { font-size: 14px; color: var(--text2); }
+  .dash-actions { display: flex; gap: 10px; margin-bottom: 20px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 16px; }
+  .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .stat-icon.green { background: var(--green-light); }
+  .stat-icon.blue { background: #dbeafe; }
+  .stat-icon.purple { background: #e9d5ff; }
   .stat-icon.orange { background: var(--orange-light); }
-  .stat-icon.blue { background: #e6f1fb; }
-  .stat-icon.purple { background: #eeedfe; }
-  .stat-num { font-size: 26px; font-weight: 700; }
-  .stat-lbl { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .stat-num { font-size: 28px; font-weight: 700; line-height: 1; }
+  .stat-lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
 
-  .section-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 16px; }
-  .section-head { padding: 14px 18px; border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; }
-  .section-head h3 { font-size: 15px; font-weight: 600; }
+  /* TABLE */
+  .table-container { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); overflow: hidden; }
+  .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; }
+  .table-header-left { font-size: 16px; font-weight: 600; }
   table { width: 100%; border-collapse: collapse; }
-  th { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; padding: 10px 18px; text-align: left; background: var(--surface2); border-bottom: 1px solid var(--border2); }
-  td { padding: 12px 18px; font-size: 13px; border-bottom: 1px solid var(--border2); vertical-align: middle; }
+  th { text-align: left; padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border2); background: var(--surface2); }
+  td { padding: 14px 20px; border-bottom: 1px solid var(--border2); font-size: 13px; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--surface2); }
-  .tbl-name { font-weight: 600; display: flex; align-items: center; gap: 6px; }
-  .tbl-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
-  .status-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+  tr:hover { background: var(--surface2); }
+  .tbl-name { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .tbl-sub { font-size: 12px; color: var(--text2); }
+  .row-acts { display: flex; gap: 6px; }
+  .icon-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text2); transition: all .15s; }
+  .icon-btn:hover { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .edit-btn:hover { background: #dbeafe; border-color: #185fa5; color: #185fa5; }
+  .del-btn:hover { background: #fee2e2; border-color: #991b1b; color: #991b1b; }
+  .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
   .s-open { background: var(--green-light); color: var(--green-dark); }
   .s-closed { background: var(--orange-light); color: var(--orange); }
-  .row-acts { display: flex; gap: 5px; }
-  .icon-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--text2); transition: all .15s; }
-  .icon-btn:hover.edit-btn { background: #e6f1fb; color: #185fa5; border-color: #85b7eb; }
-  .icon-btn:hover.del-btn { background: #fcebeb; color: #a32d2d; border-color: #f09595; }
+  .stars { color: #f59e0b; }
 
-  /* RATING STARS */
-  .stars { color: #f59e0b; font-size: 13px; }
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid .form-group.full { grid-column: 1 / -1; }
+  select.form-input { cursor: pointer; }
 
   /* TOAST */
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; padding: 12px 20px; border-radius: var(--radius-sm); font-size: 14px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all .3s; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 8px; }
-  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: #fff; padding: 12px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; z-index: 300; opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   .toast.success { background: var(--green); }
-  .toast.error { background: #a32d2d; }
+  .toast.error { background: #dc2626; }
 
-  /* RESPONSIVE */
-  @media(max-width: 640px) {
-    .hero-stats { display: none; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .form-row { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    .hero-top { flex-direction: column; }
+    .hero-stats { width: 100%; justify-content: space-around; }
     .cards-grid { grid-template-columns: 1fr; }
-    th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4) { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .detail-actions { flex-direction: column; }
+    table { font-size: 12px; }
+    th, td { padding: 10px 12px; }
   }
 </style>
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav>
   <div class="nav-inner">
-    <a class="brand" href="#" onclick="switchPage('public');return false;">
-      <div class="brand-logo"><i class="ti ti-map-pin"></i></div>
-      <div class="brand-name">Loka<span>list</span></div>
+    <a href="#" class="brand" onclick="switchPage('public'); return false;">
+      <div class="brand-logo">🔧</div>
+      <div class="brand-name">Lokal<span>ist</span></div>
     </a>
     <div class="nav-links">
-      <button class="nav-btn active" id="nav-public" onclick="switchPage('public')"><i class="ti ti-apps"></i> Direktori</button>
-      <button class="nav-btn" id="nav-dash" onclick="switchPage('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
-      <button class="nav-btn primary" onclick="openForm()"><i class="ti ti-plus"></i> Tambah</button>
+      <button id="nav-public" class="nav-btn active" onclick="switchPage('public')">
+        <i class="ti ti-home"></i> Beranda
+      </button>
+      <button id="nav-dash" class="nav-btn" onclick="attemptDashboardAccess()" style="display: none;">
+        <i class="ti ti-layout-dashboard"></i> Dashboard
+      </button>
+      <button id="nav-logout" class="nav-btn logout" onclick="logout()" style="display: none;">
+        <i class="ti ti-logout"></i> Logout
+      </button>
     </div>
   </div>
 </nav>
 
-<div class="main">
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page">
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="login-logo">🔒</div>
+        <div class="login-title">Login Admin</div>
+        <div class="login-subtitle">Masuk untuk mengakses dashboard</div>
+      </div>
+      
+      <div id="login-error" class="error-message"></div>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="login-username">Username</label>
+          <input type="text" id="login-username" class="form-input" placeholder="Masukkan username" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-input" placeholder="Masukkan password" required>
+        </div>
+        
+        <button type="submit" class="login-btn">
+          <i class="ti ti-login"></i> Masuk
+        </button>
+      </form>
+      
+      <div class="login-info">
+        <strong>Demo Credentials:</strong>
+        Username: <code>admin</code><br>
+        Password: <code>admin123</code>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <!-- PUBLIC PAGE -->
-  <div id="page-public" class="page active">
+<!-- PUBLIC PAGE -->
+<div id="page-public" class="page active">
+  <div class="main">
     <div class="hero">
       <div class="hero-top">
         <div class="hero-text">
-          <h1>Temukan Jasa <span>Pertukangan</span><br>Terpercaya di Sekitarmu</h1>
-          <p>Ratusan tukang, tukang las, listrik, cat, dan jasa bangunan siap membantu.</p>
+          <h1>Temukan Tukang Terpercaya <span>di Sekitar Anda</span></h1>
+          <p>Direktori lengkap jasa pertukangan dan perbaikan rumah</p>
         </div>
         <div class="hero-stats">
-          <div class="hstat"><div class="hstat-num" id="stat-total">0</div><div class="hstat-lbl">Usaha</div></div>
-          <div class="hstat"><div class="hstat-num" id="stat-open">0</div><div class="hstat-lbl">Buka</div></div>
-          <div class="hstat"><div class="hstat-num" id="stat-cats">0</div><div class="hstat-lbl">Kategori</div></div>
+          <div class="hstat"><div class="hstat-num" id="hero-total">0</div><div class="hstat-lbl">Total Jasa</div></div>
+          <div class="hstat"><div class="hstat-num" id="hero-open">0</div><div class="hstat-lbl">Buka</div></div>
         </div>
       </div>
       <div class="search-wrap">
         <div class="search-box">
-          <i class="ti ti-search" style="color:var(--text3);font-size:17px"></i>
-          <input type="text" id="search-input" placeholder="Cari tukang kayu, las, listrik, cat tembok..." oninput="renderPublic()">
+          <i class="ti ti-search"></i>
+          <input type="text" id="search-input" placeholder="Cari berdasarkan nama atau kategori..." oninput="renderPublic()">
         </div>
       </div>
     </div>
 
     <div class="filters-bar">
-      <div class="filter-scroll" id="cat-filters"></div>
+      <div class="filter-scroll" id="filters"></div>
       <select class="sort-sel" id="sort-sel" onchange="renderPublic()">
-        <option value="name">A–Z</option>
+        <option value="name">A-Z</option>
         <option value="rating">Rating</option>
-        <option value="open">Buka Dulu</option>
+        <option value="reviews">Ulasan</option>
       </select>
     </div>
 
     <div class="cards-header">
-      <div class="cards-header-left">Menampilkan <strong id="result-count">0</strong> usaha</div>
+      <div class="cards-header-left"><strong id="result-count">0</strong> hasil ditemukan</div>
       <div class="view-toggle">
-        <button class="vbtn active" id="vbtn-grid" onclick="setView('grid')" title="Grid"><i class="ti ti-layout-grid"></i></button>
-        <button class="vbtn" id="vbtn-list" onclick="setView('list')" title="List"><i class="ti ti-list"></i></button>
+        <button class="vbtn active" onclick="setView('grid')"><i class="ti ti-layout-grid"></i></button>
+        <button class="vbtn" onclick="setView('list')"><i class="ti ti-list"></i></button>
       </div>
     </div>
 
-    <div id="cards-container" class="cards-grid"></div>
+    <div id="cards-container"></div>
   </div>
+</div>
 
-  <!-- DASHBOARD PAGE -->
-  <div id="page-dashboard" class="page">
+<!-- DASHBOARD PAGE -->
+<div id="page-dashboard" class="page">
+  <div class="main">
     <div class="dash-header">
-      <h2>Dashboard Admin</h2>
-      <button class="nav-btn primary" onclick="openForm()"><i class="ti ti-plus"></i> Tambah Jasa</button>
+      <div class="dash-title">Dashboard Admin</div>
+      <div class="dash-subtitle">Kelola data jasa pertukangan</div>
+    </div>
+
+    <div class="dash-actions">
+      <div class="search-box" style="max-width: 350px;">
+        <i class="ti ti-search"></i>
+        <input type="text" id="dash-search" placeholder="Cari jasa..." oninput="renderDashboard()">
+      </div>
+      <button class="nav-btn primary" onclick="openForm()" style="margin-left: auto;">
+        <i class="ti ti-plus"></i> Tambah Jasa
+      </button>
     </div>
 
     <div class="stats-grid" id="dash-stats"></div>
 
-    <div class="section-card">
-      <div class="section-head">
-        <h3>Semua Jasa <span id="tbl-count" style="font-size:12px;color:var(--text3);font-weight:400"></span></h3>
-        <div style="display:flex;gap:8px;align-items:center">
-          <input type="text" id="dash-search" placeholder="Cari..." style="padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:160px;font-family:inherit;outline:none;background:var(--bg);" oninput="renderDashboard()">
-        </div>
+    <div class="table-container">
+      <div class="table-header">
+        <div class="table-header-left">Daftar Jasa <span id="tbl-count"></span></div>
       </div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>Nama Usaha</th>
-              <th>Kategori</th>
-              <th>Status</th>
-              <th>Estimasi Harga</th>
-              <th>Rating</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="dash-tbody"></tbody>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nama & Lokasi</th>
+            <th>Kategori</th>
+            <th>Status</th>
+            <th>Harga</th>
+            <th>Rating</th>
+            <th width="100">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="dash-tbody"></tbody>
+      </table>
     </div>
   </div>
-
-</div><!-- /main -->
+</div>
 
 <!-- DETAIL MODAL -->
-<div class="modal-overlay" id="detail-overlay" onclick="if(event.target===this)closeDetail()">
-  <div class="modal" id="detail-modal">
+<div class="modal-overlay" id="detail-overlay" onclick="if(event.target===this) closeDetail()">
+  <div class="modal-box">
     <div class="modal-header">
-      <div></div>
+      <div class="modal-title">Detail Jasa</div>
       <button class="modal-close" onclick="closeDetail()"><i class="ti ti-x"></i></button>
     </div>
     <div class="modal-body" id="detail-body"></div>
@@ -320,82 +381,77 @@
 </div>
 
 <!-- FORM MODAL -->
-<div class="modal-overlay" id="form-overlay" onclick="if(event.target===this)closeForm()">
-  <div class="modal form-modal">
+<div class="modal-overlay" id="form-overlay" onclick="if(event.target===this) closeForm()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="form-title">Tambah Jasa Baru</div>
+      <button class="modal-close" onclick="closeForm()"><i class="ti ti-x"></i></button>
+    </div>
     <div class="modal-body">
-      <h3 id="form-title">Tambah Jasa Baru</h3>
-      <div class="form-group">
-        <label>Nama Usaha *</label>
-        <input type="text" id="f-name" placeholder="cth. Tukang Kayu Pak Soleh">
-      </div>
-      <div class="form-row">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Nama Usaha *</label>
+          <input type="text" id="f-name" class="form-input" placeholder="Contoh: Tukang Kayu Jaya">
+        </div>
         <div class="form-group">
-          <label>Kategori *</label>
-          <select id="f-cat">
+          <label class="form-label">Kategori</label>
+          <select id="f-cat" class="form-input">
             <option>Pertukangan</option>
-            <option>Las & Besi</option>
             <option>Listrik</option>
-            <option>Cat & Finishing</option>
             <option>Plumbing</option>
             <option>AC & Elektronik</option>
-            <option>Genteng & Atap</option>
-            <option>Keramik & Granit</option>
-            <option>Bongkar Pasang</option>
+            <option>Cat & Dekorasi</option>
+            <option>Furniture</option>
+            <option>Renovasi</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Status</label>
-          <select id="f-status">
+          <label class="form-label">Status</label>
+          <select id="f-status" class="form-input">
             <option>Buka</option>
             <option>Tutup</option>
           </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Alamat *</label>
-        <input type="text" id="f-addr" placeholder="cth. Jl. Merdeka No. 10">
-      </div>
-      <div class="form-row">
         <div class="form-group">
-          <label>Kecamatan</label>
-          <input type="text" id="f-kec" placeholder="cth. Kec. Coblong">
+          <label class="form-label">Alamat</label>
+          <input type="text" id="f-addr" class="form-input" placeholder="Jalan/Gang">
         </div>
         <div class="form-group">
-          <label>Jam Operasional</label>
-          <input type="text" id="f-hours" placeholder="cth. 08:00–17:00">
+          <label class="form-label">Kecamatan</label>
+          <input type="text" id="f-kec" class="form-input" placeholder="Nama Kecamatan">
         </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>No. WhatsApp</label>
-          <input type="text" id="f-wa" placeholder="628123456789">
+        <div class="form-group full">
+          <label class="form-label">Jam Operasional</label>
+          <input type="text" id="f-hours" class="form-input" placeholder="Contoh: Senin-Sabtu 08:00-17:00">
         </div>
         <div class="form-group">
-          <label>No. Telepon</label>
-          <input type="text" id="f-tel" placeholder="0812-xxxx-xxxx">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Estimasi Harga</label>
-        <input type="text" id="f-price" placeholder="cth. Rp80.000–Rp150.000/jam">
-      </div>
-      <div class="form-group">
-        <label>Link Google Maps</label>
-        <input type="text" id="f-maps" placeholder="https://maps.google.com/...">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Rating (1–5)</label>
-          <input type="number" id="f-rating" min="1" max="5" step="0.1" placeholder="4.5">
+          <label class="form-label">WhatsApp</label>
+          <input type="text" id="f-wa" class="form-input" placeholder="628123456789">
         </div>
         <div class="form-group">
-          <label>Jumlah Ulasan</label>
-          <input type="number" id="f-reviews" min="0" placeholder="24">
+          <label class="form-label">Telepon</label>
+          <input type="text" id="f-tel" class="form-input" placeholder="0778-123456">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Estimasi Harga</label>
+          <input type="text" id="f-price" class="form-input" placeholder="Contoh: Rp 150.000 - 500.000">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Link Google Maps</label>
+          <input type="url" id="f-maps" class="form-input" placeholder="https://maps.google.com/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rating (1-5)</label>
+          <input type="number" id="f-rating" class="form-input" min="1" max="5" step="0.1" value="4.0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Jumlah Ulasan</label>
+          <input type="number" id="f-reviews" class="form-input" min="0" value="0">
         </div>
       </div>
-      <div class="form-actions">
-        <button class="btn-cancel" onclick="closeForm()">Batal</button>
-        <button class="btn-save" onclick="saveEntry()">Simpan</button>
+      <div style="display: flex; gap: 10px; margin-top: 24px;">
+        <button class="nav-btn" onclick="closeForm()" style="flex: 1;">Batal</button>
+        <button class="nav-btn primary" onclick="saveEntry()" style="flex: 1;">Simpan</button>
       </div>
     </div>
   </div>
@@ -405,137 +461,175 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const CAT_ICONS = {
-  'Pertukangan':'🔨','Las & Besi':'⚙️','Listrik':'⚡','Cat & Finishing':'🎨',
-  'Plumbing':'🔧','AC & Elektronik':'❄️','Genteng & Atap':'🏠','Keramik & Granit':'🪨','Bongkar Pasang':'🏗️'
+// AUTH SYSTEM
+const ADMIN_CREDENTIALS = {
+  username: 'admin',
+  password: 'admin123'
 };
 
-// Load from localStorage or use defaults
-function loadData() {
-  const saved = localStorage.getItem('lokalist_data');
-  if (saved) return JSON.parse(saved);
-  return [
-    {id:1,name:'Tukang Kayu Pak Soleh',cat:'Pertukangan',status:'Buka',addr:'Jl. Pahlawan No. 5',kec:'Kec. Coblong',hours:'08:00–17:00',wa:'6281234567890',tel:'0812-3456-789',price:'Rp80.000–Rp150.000/jam',maps:'https://maps.google.com',verified:true,rating:4.8,reviews:32},
-    {id:2,name:'CV Baja Mandiri Las',cat:'Las & Besi',status:'Buka',addr:'Jl. Industri No. 22',kec:'Kec. Cicendo',hours:'07:00–18:00',wa:'6289876543210',tel:'022-5555-001',price:'Rp100.000–Rp300.000/proyek',maps:'https://maps.google.com',verified:true,rating:4.6,reviews:18},
-    {id:3,name:'Tukang Listrik Bang Ari',cat:'Listrik',status:'Buka',addr:'Jl. Veteran No. 8',kec:'Kec. Bandung Wetan',hours:'08:00–20:00',wa:'6281122334455',tel:'0811-2233-445',price:'Rp75.000/jam + material',maps:'https://maps.google.com',verified:false,rating:4.3,reviews:11},
-    {id:4,name:'Cat Interior Pak Hendra',cat:'Cat & Finishing',status:'Tutup',addr:'Jl. Sukajadi No. 15',kec:'Kec. Sukajadi',hours:'Senin–Sabtu 08:00–16:00',wa:'6282233445566',tel:'0822-3344-556',price:'Rp35.000/m²',maps:'https://maps.google.com',verified:true,rating:4.9,reviews:45},
-    {id:5,name:'Ahli Ledeng Pak Rohmat',cat:'Plumbing',status:'Buka',addr:'Jl. Cibiru No. 3',kec:'Kec. Cibiru',hours:'24 Jam',wa:'6285566778899',tel:'0855-6677-889',price:'Rp50.000–Rp200.000/kunjungan',maps:'https://maps.google.com',verified:false,rating:4.1,reviews:9},
-    {id:6,name:'Servis AC Pak Teguh',cat:'AC & Elektronik',status:'Buka',addr:'Jl. Antapani No. 9',kec:'Kec. Antapani',hours:'08:00–19:00',wa:'6287711223344',tel:'0877-1122-334',price:'Rp150.000–Rp350.000/unit',maps:'https://maps.google.com',verified:true,rating:4.7,reviews:27},
-    {id:7,name:'Tukang Genteng Mas Bowo',cat:'Genteng & Atap',status:'Buka',addr:'Jl. Gedebage No. 11',kec:'Kec. Gedebage',hours:'07:00–17:00',wa:'6281399887766',tel:'0813-9988-776',price:'Rp500.000–Rp2.000.000/hari',maps:'https://maps.google.com',verified:false,rating:4.4,reviews:14},
-    {id:8,name:'Pasang Keramik Bu Sari',cat:'Keramik & Granit',status:'Tutup',addr:'Jl. Kiaracondong No. 7',kec:'Kec. Kiaracondong',hours:'Senin–Jumat 08:00–17:00',wa:'6282100112233',tel:'0821-0011-223',price:'Rp60.000–Rp100.000/m²',maps:'https://maps.google.com',verified:true,rating:4.5,reviews:22},
+function checkAuth() {
+  const isLoggedIn = localStorage.getItem('lokalist_admin_logged_in') === 'true';
+  const navDash = document.getElementById('nav-dash');
+  const navLogout = document.getElementById('nav-logout');
+  
+  if (isLoggedIn) {
+    navDash.style.display = 'flex';
+    navLogout.style.display = 'flex';
+  } else {
+    navDash.style.display = 'none';
+    navLogout.style.display = 'none';
+  }
+  
+  return isLoggedIn;
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  
+  const username = document.getElementById('login-username').value;
+  const password = document.getElementById('login-password').value;
+  const errorDiv = document.getElementById('login-error');
+  
+  if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+    localStorage.setItem('lokalist_admin_logged_in', 'true');
+    errorDiv.classList.remove('show');
+    showToast('Login berhasil! Selamat datang Admin 👋', 'success');
+    checkAuth();
+    switchPage('dashboard');
+    document.getElementById('login-username').value = '';
+    document.getElementById('login-password').value = '';
+  } else {
+    errorDiv.textContent = '❌ Username atau password salah!';
+    errorDiv.classList.add('show');
+  }
+}
+
+function logout() {
+  if (confirm('Yakin ingin logout?')) {
+    localStorage.removeItem('lokalist_admin_logged_in');
+    checkAuth();
+    switchPage('public');
+    showToast('Anda telah logout', 'success');
+  }
+}
+
+function attemptDashboardAccess() {
+  if (checkAuth()) {
+    switchPage('dashboard');
+  } else {
+    switchPage('login');
+  }
+}
+
+// DATA
+const CAT_ICONS = {
+  'Pertukangan': '🔨',
+  'Listrik': '⚡',
+  'Plumbing': '🔧',
+  'AC & Elektronik': '❄️',
+  'Cat & Dekorasi': '🎨',
+  'Furniture': '🪑',
+  'Renovasi': '🏗️'
+};
+
+let services = JSON.parse(localStorage.getItem('lokalist_services') || '[]');
+if (!services.length) {
+  services = [
+    { id: 1, name: 'Tukang Kayu Jaya', cat: 'Pertukangan', status: 'Buka', addr: 'Jl. Merdeka No. 12', kec: 'Batam Kota', hours: 'Senin-Sabtu 08:00-17:00', tel: '0778-123456', wa: '628123456789', price: 'Rp 150.000 - 500.000', maps: 'https://maps.google.com', rating: 4.8, reviews: 127, verified: true },
+    { id: 2, name: 'Listrik Express', cat: 'Listrik', status: 'Buka', addr: 'Komplek Seraya Blok C', kec: 'Sekupang', hours: '24 Jam', tel: '0778-234567', wa: '628234567890', price: 'Mulai Rp 100.000', maps: 'https://maps.google.com', rating: 4.6, reviews: 89, verified: true },
+    { id: 3, name: 'Pak Budi Plumbing', cat: 'Plumbing', status: 'Buka', addr: 'Taman Baloi Permai', kec: 'Batam Kota', hours: 'Senin-Jumat 09:00-16:00', tel: '0778-345678', wa: '628345678901', price: 'Hubungi untuk harga', maps: 'https://maps.google.com', rating: 4.5, reviews: 56, verified: false },
+    { id: 4, name: 'Cool AC Service', cat: 'AC & Elektronik', status: 'Buka', addr: 'Nagoya Hill Blok D', kec: 'Lubuk Baja', hours: 'Senin-Sabtu 10:00-18:00', tel: '0778-456789', wa: '628456789012', price: 'Service mulai Rp 80.000', maps: 'https://maps.google.com', rating: 4.7, reviews: 143, verified: true },
+    { id: 5, name: 'Cat Indah Abadi', cat: 'Cat & Dekorasi', status: 'Tutup', addr: 'Batu Aji Plaza', kec: 'Batu Aji', hours: 'Senin-Sabtu 08:00-16:00', tel: '0778-567890', wa: '628567890123', price: 'Rp 50.000/m²', maps: 'https://maps.google.com', rating: 4.4, reviews: 72, verified: false }
   ];
 }
 
-function saveData() {
-  localStorage.setItem('lokalist_data', JSON.stringify(services));
-}
-
-let services = loadData();
-let nextId = Math.max(...services.map(s => s.id)) + 1;
-let activeCat = 'Semua';
-let viewMode = 'grid';
+let nextId = Math.max(...services.map(s => s.id), 0) + 1;
 let editId = null;
+let activeView = 'grid';
+let activeCategory = 'Semua';
+
+function saveData() {
+  localStorage.setItem('lokalist_services', JSON.stringify(services));
+}
 
 function stars(r) {
-  const full = Math.floor(r), half = r % 1 >= 0.5;
-  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half?1:0));
-}
-
-function renderFilters() {
-  const cats = ['Semua', ...new Set(services.map(s => s.cat))];
-  document.getElementById('cat-filters').innerHTML = cats.map(c =>
-    `<button class="pill${activeCat === c ? ' active' : ''}" onclick="setCat('${c}')">${c === 'Semua' ? '<i class="ti ti-apps"></i> Semua' : (CAT_ICONS[c] || '🔧') + ' ' + c}</button>`
-  ).join('');
-}
-
-function setCat(c) { activeCat = c; renderPublic(); }
-function setView(v) {
-  viewMode = v;
-  document.getElementById('cards-container').className = v === 'grid' ? 'cards-grid' : 'cards-list';
-  document.getElementById('vbtn-grid').classList.toggle('active', v === 'grid');
-  document.getElementById('vbtn-list').classList.toggle('active', v === 'list');
-  renderPublic();
+  const full = Math.floor(r);
+  const half = r % 1 >= 0.5;
+  let html = '';
+  for (let i = 0; i < full; i++) html += '<i class="ti ti-star-filled"></i>';
+  if (half) html += '<i class="ti ti-star-half-filled"></i>';
+  for (let i = full + (half ? 1 : 0); i < 5; i++) html += '<i class="ti ti-star"></i>';
+  return html;
 }
 
 function renderPublic() {
-  // Update hero stats
-  document.getElementById('stat-total').textContent = services.length;
-  document.getElementById('stat-open').textContent = services.filter(s => s.status === 'Buka').length;
-  document.getElementById('stat-cats').textContent = new Set(services.map(s => s.cat)).size;
-
-  renderFilters();
-  const q = document.getElementById('search-input').value.toLowerCase();
+  const q = (document.getElementById('search-input')?.value || '').toLowerCase();
   const sort = document.getElementById('sort-sel').value;
+  
   let list = services.filter(s => {
-    const matchCat = activeCat === 'Semua' || s.cat === activeCat;
-    const matchQ = !q || s.name.toLowerCase().includes(q) || s.cat.toLowerCase().includes(q) || s.addr.toLowerCase().includes(q) || s.kec.toLowerCase().includes(q);
-    return matchCat && matchQ;
+    const matchQ = !q || s.name.toLowerCase().includes(q) || s.cat.toLowerCase().includes(q) || s.kec.toLowerCase().includes(q);
+    const matchCat = activeCategory === 'Semua' || s.cat === activeCategory;
+    return matchQ && matchCat;
   });
-  if (sort === 'rating') list.sort((a, b) => b.rating - a.rating);
-  else if (sort === 'open') list.sort((a, b) => (b.status === 'Buka') - (a.status === 'Buka'));
-  else list.sort((a, b) => a.name.localeCompare(b.name));
 
+  if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+  if (sort === 'rating') list.sort((a, b) => b.rating - a.rating);
+  if (sort === 'reviews') list.sort((a, b) => b.reviews - a.reviews);
+
+  document.getElementById('hero-total').textContent = services.length;
+  document.getElementById('hero-open').textContent = services.filter(s => s.status === 'Buka').length;
   document.getElementById('result-count').textContent = list.length;
-  const el = document.getElementById('cards-container');
+
+  const cats = ['Semua', ...new Set(services.map(s => s.cat))];
+  document.getElementById('filters').innerHTML = cats.map(c => 
+    `<button class="pill ${c === activeCategory ? 'active' : ''}" onclick="activeCategory='${c}'; renderPublic()">${c === 'Semua' ? '🏠' : CAT_ICONS[c] || '🔧'} ${c}</button>`
+  ).join('');
+
+  const container = document.getElementById('cards-container');
   if (!list.length) {
-    el.innerHTML = '<div class="empty"><i class="ti ti-search-off"></i><div>Tidak ada jasa yang ditemukan</div></div>';
+    container.innerHTML = '<div class="empty"><i class="ti ti-search-off"></i><div>Tidak ada hasil ditemukan</div></div>';
     return;
   }
-  if (viewMode === 'list') {
-    el.innerHTML = list.map(s => `
-      <div class="scard scard-list" onclick="openDetail(${s.id})">
-        <div class="scard-top" style="margin-bottom:0;flex:1;align-items:center;gap:12px">
-          <div class="scard-icon">${CAT_ICONS[s.cat] || '🔧'}</div>
-          <div class="scard-meta">
-            <div class="scard-name">${s.name}${s.verified ? ' <span class="verified" title="Terverifikasi"><i class="ti ti-circle-check-filled" style="font-size:13px"></i></span>' : ''}</div>
-            <div class="scard-row">
-              <span class="tag tag-cat">${s.cat}</span>
-              <span class="tag ${s.status === 'Buka' ? 'tag-open' : 'tag-closed'}">${s.status}</span>
-              <span class="rating">${stars(s.rating)} <span>(${s.reviews})</span></span>
-            </div>
-            <div class="scard-addr"><i class="ti ti-map-pin" style="font-size:12px"></i>${s.addr}, ${s.kec}</div>
+
+  container.className = activeView === 'grid' ? 'cards-grid' : 'cards-list';
+  container.innerHTML = list.map(s => `
+    <div class="scard ${activeView === 'list' ? 'scard-list' : ''}" onclick="openDetail(${s.id})">
+      <div class="scard-top">
+        <div class="scard-icon">${CAT_ICONS[s.cat] || '🔧'}</div>
+        <div class="scard-meta">
+          <div class="scard-name">${s.name} ${s.verified ? '<i class="ti ti-circle-check-filled verified"></i>' : ''}</div>
+          <div class="scard-row">
+            <span class="tag tag-cat">${s.cat}</span>
+            <span class="tag ${s.status === 'Buka' ? 'tag-open' : 'tag-closed'}">${s.status}</span>
           </div>
-          <div class="scard-actions" onclick="event.stopPropagation()">
-            <a class="act-btn primary" href="${s.maps}" target="_blank" title="Maps"><i class="ti ti-map-pin"></i></a>
-            <a class="act-btn" href="https://wa.me/${s.wa}" target="_blank" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
-            <a class="act-btn" href="tel:${s.tel}" title="Telepon"><i class="ti ti-phone"></i></a>
-          </div>
+          <div class="scard-addr"><i class="ti ti-map-pin"></i>${s.kec}</div>
+          <div class="scard-price"><i class="ti ti-tag"></i>${s.price}</div>
         </div>
-      </div>`).join('');
-  } else {
-    el.innerHTML = list.map(s => `
-      <div class="scard" onclick="openDetail(${s.id})">
-        <div class="scard-top">
-          <div class="scard-icon">${CAT_ICONS[s.cat] || '🔧'}</div>
-          <div class="scard-meta">
-            <div class="scard-name">${s.name}${s.verified ? ' <span class="verified"><i class="ti ti-circle-check-filled" style="font-size:13px"></i></span>' : ''}</div>
-            <div class="scard-row">
-              <span class="tag tag-cat">${s.cat}</span>
-              <span class="tag ${s.status === 'Buka' ? 'tag-open' : 'tag-closed'}">${s.status === 'Buka' ? '● Buka' : '● Tutup'}</span>
-            </div>
-            <div class="rating" style="margin-top:4px">${stars(s.rating)} <span style="color:var(--text3);font-weight:400">(${s.reviews} ulasan)</span></div>
-          </div>
-        </div>
-        <div class="scard-addr"><i class="ti ti-map-pin" style="font-size:12px"></i>${s.addr}, ${s.kec}</div>
-        <div class="scard-price"><i class="ti ti-tag" style="font-size:12px"></i>${s.price}</div>
-        <hr class="scard-divider">
-        <div class="scard-actions" onclick="event.stopPropagation()">
-          <div style="flex:1;font-size:12px;color:var(--text3);display:flex;align-items:center;gap:4px"><i class="ti ti-clock" style="font-size:12px"></i>${s.hours}</div>
-          <a class="act-btn primary" href="${s.maps}" target="_blank" title="Google Maps"><i class="ti ti-map-pin"></i></a>
-          <a class="act-btn" href="https://wa.me/${s.wa}" target="_blank" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
-          <a class="act-btn" href="tel:${s.tel}" title="Telepon"><i class="ti ti-phone"></i></a>
-        </div>
-      </div>`).join('');
-  }
+      </div>
+      <hr class="scard-divider">
+      <div class="scard-actions">
+        <div class="rating">${stars(s.rating)} ${s.rating} <span>(${s.reviews})</span></div>
+        <a class="act-btn" href="https://wa.me/${s.wa}" onclick="event.stopPropagation()" target="_blank" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
+        <a class="act-btn" href="tel:${s.tel}" onclick="event.stopPropagation()" title="Telepon"><i class="ti ti-phone"></i></a>
+        <a class="act-btn primary" href="${s.maps}" onclick="event.stopPropagation()" target="_blank" title="Maps"><i class="ti ti-map-pin"></i></a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setView(v) {
+  activeView = v;
+  document.querySelectorAll('.vbtn').forEach(b => b.classList.remove('active'));
+  event.target.closest('.vbtn').classList.add('active');
+  renderPublic();
 }
 
 function openDetail(id) {
   const s = services.find(x => x.id === id);
   document.getElementById('detail-body').innerHTML = `
-    <div class="detail-icon">${CAT_ICONS[s.cat] || '🔧'}</div>
-    <div class="detail-name">${s.name}${s.verified ? ' <i class="ti ti-circle-check-filled" style="color:var(--green);font-size:16px"></i>' : ''}</div>
-    <div class="detail-tags">
-      <span class="tag tag-cat">${s.cat}</span>
+    <div style="font-size:24px;font-weight:700;margin-bottom:8px">${s.name} ${s.verified ? '<i class="ti ti-circle-check-filled" style="color:var(--green);font-size:20px"></i>' : ''}</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <span class="tag tag-cat">${CAT_ICONS[s.cat] || '🔧'} ${s.cat}</span>
       <span class="tag ${s.status === 'Buka' ? 'tag-open' : 'tag-closed'}">${s.status}</span>
       ${s.verified ? '<span class="tag" style="background:#e1f5ee;color:#0f5c36">Terverifikasi</span>' : ''}
     </div>
@@ -584,6 +678,11 @@ function renderDashboard() {
 }
 
 function switchPage(p) {
+  // Protect dashboard access
+  if (p === 'dashboard' && !checkAuth()) {
+    p = 'login';
+  }
+  
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
   document.getElementById('nav-public').classList.toggle('active', p === 'public');
@@ -660,6 +759,8 @@ function showToast(msg, type) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// Initialize
+checkAuth();
 renderPublic();
 </script>
 </body>
